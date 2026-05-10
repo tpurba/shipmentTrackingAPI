@@ -1,0 +1,29 @@
+services:
+
+  postgres:
+    image: postgres
+    container_name: shipment-postgres
+
+    environment:
+      POSTGRES_DB: shipmentdb
+      POSTGRES_USER: shipmentuser
+      POSTGRES_PASSWORD: shipmentpass
+
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+
+    container_name: shipment-app
+
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      - postgres
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shipmentdb
+      SPRING_DATASOURCE_USERNAME: shipmentuser
+      SPRING_DATASOURCE_PASSWORD: shipmentpass
